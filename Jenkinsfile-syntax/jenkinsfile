@@ -1,0 +1,52 @@
+#!/usr/bin/env groovy
+
+def gv
+
+pipeline {
+    agent any
+    parameters {
+        choise(name: 'VERSION', choices: ['1.0.0', '1.0.1', '1.0.2'], description: '')
+        booleanParam(name: 'ExecuteTasks', defaultValue: true, description: '')
+     }
+    stages {
+        stage ("init") {
+            steps {
+                script {
+                    gv = load "script.groovy"
+                }
+            }
+        }
+
+        stage ("build") {
+            steps {
+                script {
+                    gv.buildApp()
+                    }
+                }
+        }
+
+        stage ("test") {
+            when {
+                    expression {
+                        param.ExecuteTests
+                        }
+                }
+
+                steps {
+                    script {
+                            gv.testApp()
+                        }
+                    }
+            }
+            
+        stage ("deploy") {
+            steps {
+                script {
+                    env.ENV = input message: "select the enviroment to deply to", ok: "done", parameters: [choise (name: 'ONE', choices: ['dev', 'staging', 'prod'], description: "")]
+                    gv.deployApp()
+                    echo "deploying to $(ENV)"
+                    }
+                }
+            }
+    }
+}
