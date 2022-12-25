@@ -5,10 +5,10 @@ def buildJar() {
 
 def buildImage() {
     echo "building the docker image..."
-    withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-        sh 'docker build -t nanajanashia/demo-app:jma-2.0 .'
+    withCredentials([usernamePassword(credentialsId: 'docker-hub-cred', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+        sh 'docker build -t anasm98/javmav-app-anasm:jma-anasm-1.0.2 .'
         sh "echo $PASS | docker login -u $USER --password-stdin"
-        sh 'docker push nanajanashia/demo-app:jma-2.0'
+        sh 'docker push anasm98/javmav-app-anasm:jma-anasm-1.0.2'
     }
 } 
 
@@ -17,3 +17,4 @@ def deployApp() {
 } 
 
 return this
+
