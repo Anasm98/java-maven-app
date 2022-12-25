@@ -12,14 +12,14 @@ pipeline {
         stage("init") {
             steps {
                 script {
-                   gv = load "script.groovy"
+                   gv = load "Jenkinsfile-syntax/script.groovy"
                 }
             }
         }
         stage("build") {
             steps {
                 script {
-                    gv.buildApp()
+                    gv.buildJar()
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
             }
             steps {
                 script {
-                    gv.testApp()
+                    gv.buildImage()
                 }
             }
         }
