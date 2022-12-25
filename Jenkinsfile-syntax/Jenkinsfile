@@ -19,14 +19,14 @@ pipeline {
                 }
             }
         }
-        stage("build") {
+        stage("buildJar") {
             steps {
                 script {
                     gv.buildJar()
                 }
             }
         }
-        stage("test") {
+        stage("buildImage") {
             when {
                 expression {
                     params.executeTests
@@ -38,7 +38,7 @@ pipeline {
                 }
             }
         }
-        stage("deploy") {
+        stage("deployApp") {
             steps {
                 script {
                     env.ENV = input message: "Select the environment to deploy to", ok: "Done", parameters: [choice(name: 'ONE', choices: ['dev', 'staging', 'prod'], description: '')]
