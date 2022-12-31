@@ -28,6 +28,7 @@ pipeline {
                 expression {
                     BRANCH_NAME == 'main'
                 }
+            }
             steps {
                 script {
                     echo "deploying the application..."
