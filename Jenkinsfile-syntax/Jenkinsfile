@@ -35,7 +35,7 @@ pipeline {
             }
             steps {
                 script {
-                    buildImage()
+                    buildImage 'anasm98/javmav-app-anasm:jma-anasm-1.0.3'
                 }
             }
         }
