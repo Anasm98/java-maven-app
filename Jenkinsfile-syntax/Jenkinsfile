@@ -29,9 +29,10 @@ pipeline {
         stage("buildImage") {
             when {
                  when {
-                expression {
-                    params.executeTests
-                    BRANCH_NAME == 'main'
+                    expression {
+                         params.executeTests
+                        BRANCH_NAME == 'main'
+                    }
                 }
             }
             steps {
