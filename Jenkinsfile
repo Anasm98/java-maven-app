@@ -1,6 +1,5 @@
 #!/usr/bin/env groovy
 
-    
 pipeline {
     agent none
     stages {
@@ -38,3 +37,4 @@ pipeline {
         }
     }
 }
+
