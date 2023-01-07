@@ -34,7 +34,7 @@ def versionUptCmmt() {
         sh 'git branch'
         sh 'git config --list'
 
-        sh "git remote set-url origin https://${USER}:${PASS}@github.com/Anasm98/java-maven-app.git"
+        sh "git remote set-url origin https://$GIT_TOKEN@github.com/Anasm98/java-maven-app.git"
         sh 'git add .'
         sh 'git commit -am "ci: version bump"'
         sh 'git push origin HEAD:main'
