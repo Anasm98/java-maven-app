@@ -8,7 +8,9 @@ def versionInc() {
     sh 'mvn build-helper:parse-version versions:set -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} versions:commit'
     def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
     def version = matcher[0][1]
+    echo "mvn app version: $version"
     env.IMAGE_NAME = "$version-$BUILD_NUMBER"
+    echo "docker image version name: $IMAGE_NAME"
 } 
 
 def buildImage() {
