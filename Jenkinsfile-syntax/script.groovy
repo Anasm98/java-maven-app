@@ -3,7 +3,7 @@ def buildJar() {
     sh 'mvn clean package'
 } 
 
-def vsersionInc() {
+def versionInc() {
     echo "incrementing app version"
     sh 'mvn build-helper:parse-version versions:set -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} versions:commit'
     def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
@@ -22,6 +22,22 @@ def buildImage() {
 
 def deployApp() {
     echo 'deploying the application...'
+} 
+
+def versionUptCmmt() {
+    echo 'deploying the application...'
+    withCredentials([usernamePassword(credentialsId: 'github-credential', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+        sh 'git config --global user.email "anasm-jenkins@example.com"'
+        sh 'git config --global user.name "anasm-jenkins"'
+        
+        sh 'git status'
+        sh 'git branch'
+        sh 'git config --list'
+
+        sh "git remote set-url origin https://${USER}:${PASS}@github.com/Anasm98/java-maven-app.git"
+        sh 'git add .'
+        sh 'git commit -am "ci: version bump"'
+        sh 'git push origin HEAD:main'
 } 
 
 return this

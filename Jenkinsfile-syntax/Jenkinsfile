@@ -19,10 +19,10 @@ pipeline {
                 }
             }
         }
-        stage("vsersionInc") {
+        stage("version increment") {
             steps {
                 script {
-                    gv.vsersionInc()
+                    gv.versionInc()
                 }
             }
         }
@@ -54,6 +54,13 @@ pipeline {
                     gv.deployApp()
                     // echo "Deploying to ${ENV}"
                     echo "Deploying to production"
+                }
+            } 
+        }
+        stage("commit version upate") {
+            steps {
+                script {
+                    gv.versionUptCmmt()
                 }
             }
         }
