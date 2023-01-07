@@ -1,14 +1,23 @@
 def buildJar() {
     echo "building the application..."
-    sh 'mvn package'
+    sh 'mvn clean package'
+} 
+
+def vsersionInc() {
+    echo "incrementing app version"
+    sh 'mvn build-helper:parse-version versions:set -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} versions:commit
+'
+    def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+    def version = matcher[0][1]
+    env.IMAGE_NAME = "$version-$BUILD_NUMBER"
 } 
 
 def buildImage() {
     echo "building the docker image..."
     withCredentials([usernamePassword(credentialsId: 'docker-hub-cred', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-        sh 'docker build -t anasm98/javmav-app-anasm:jma-anasm-1.0.2 .'
+        sh "docker build -t anasm98/javmav-app-anasm:${IMAGE_NAME} ."
         sh "echo $PASS | docker login -u $USER --password-stdin"
-        sh 'docker push anasm98/javmav-app-anasm:jma-anasm-1.0.2'
+        sh "docker push anasm98/javmav-app-anasm:${IMAGE_NAME}"
     }
 } 
 
