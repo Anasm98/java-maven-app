@@ -9,16 +9,16 @@ def versionInc() {
     def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
     def version = matcher[0][1]
     echo "mvn app version: $version"
-    env.IMAGE_NAME = "$version-$BUILD_NUMBER"
+    env.IMAGE_NAME = "anasm98/javmav-app-anasm:$version-$BUILD_NUMBER"
     echo "docker image version name: $IMAGE_NAME"
 } 
 
 def buildImage() {
     echo "building the docker image..."
     withCredentials([usernamePassword(credentialsId: 'docker-hub-cred', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-        sh "docker build -t anasm98/javmav-app-anasm:${IMAGE_NAME} ."
+        sh "docker build -t ${IMAGE_NAME} ."
         sh "echo $PASS | docker login -u $USER --password-stdin"
-        sh "docker push anasm98/javmav-app-anasm:${IMAGE_NAME}"
+        sh "docker push ${IMAGE_NAME}"
     }
 } 
 
