@@ -23,7 +23,11 @@ def buildImage() {
 } 
 
 def deployApp() {
-    echo 'deploying the application...'
+    echo 'deploying the application as docker image into ec2 server...'
+    def dockerCmd = "docker run -d -p 8080:8080 ${IMAGE_NAME}"
+    sshagent(['ec2-server-key']) {
+        sh "ssh -o StrictHostKeyChecking=no ec2-user@13.233.91.184 ${dockerCmd}" 
+    }
 } 
 
 def versionUptCmmt() {
